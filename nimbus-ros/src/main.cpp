@@ -68,7 +68,6 @@ int main(int argc, char** argv)
                 new_cloud->points.push_back(basic_points);
             }
             cloud->points = new_cloud->points;
-            ROS_INFO("New Point: %d\n", cloud->points[0].x);
         }else{
             cloud = preCloud;
         }
