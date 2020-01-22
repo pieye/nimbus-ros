@@ -47,7 +47,7 @@ int main(int argc, char** argv)
     cameraPose.transform.translation.x = 0;
     cameraPose.transform.translation.y = 0;
     cameraPose.transform.translation.z = 1;
-    cameraPose.transform.rotation.x = 0.7071068;
+    cameraPose.transform.rotation.x = -0.7071068;
     cameraPose.transform.rotation.y = 0;
     cameraPose.transform.rotation.z = 0;
     cameraPose.transform.rotation.w = 0.7071068;

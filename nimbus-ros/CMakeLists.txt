@@ -49,6 +49,9 @@ target_link_libraries(WebSocketClient base64 jsoncpp ${CURL_LIBRARIES} ${WEBSOCK
 add_executable(${PROJECT_NAME}_node src/main.cpp)
 target_link_libraries(${PROJECT_NAME}_node WebSocketClient ${catkin_LIBRARIES} ${PCL_INCLUDE_DIRS})
 
+add_executable(kinect2_grabber_node src/kinect_grabber.cpp)
+target_link_libraries(kinect2_grabber_node ${catkin_LIBRARIES} ${PCL_INCLUDE_DIRS})
+
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/nimbus_ros_driver.cpp
