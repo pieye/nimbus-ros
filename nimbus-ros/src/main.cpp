@@ -8,8 +8,6 @@
 #include <pcl/common/common_headers.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/io/pcd_io.h>
-#include <pcl/visualization/pcl_visualizer.h>
-#include <pcl/visualization/cloud_viewer.h>
 #include <pcl/console/parse.h>
 #include <pcl/conversions.h>
 #include <pcl/filters/voxel_grid.h>
@@ -34,7 +32,7 @@ int main(int argc, char** argv)
     PointCloud::Ptr cloud(new PointCloud);
     PointCloud::Ptr preCloud(new PointCloud);
     
-    nimbus::WebSocketClient wbClient((unsigned char *)"http://192.168.0.69:8383/jsonrpc", false, 8080, 8383, 3, 5, 3, 10, nh);
+    nimbus::WebSocketClient wbClient("192.168.0.69", false, 8080, 8383, 3, 10, nh);
 
     cloud->width = 352 * 286;
     cloud->height = 1;
@@ -75,7 +73,7 @@ int main(int argc, char** argv)
         staticTrans.sendTransform(cameraPose);
         pcl_conversions::toPCL(ros::Time::now(), cloud->header.stamp);
         pub.publish(cloud);
-        ros::spinOnce();
+        //ros::spinOnce();
         r.sleep();
         preCloud = cloud;
     }

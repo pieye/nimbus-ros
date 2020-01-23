@@ -18,7 +18,7 @@ Under development
 ``` 
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone https://github.com/pieye/nimbus-userland.git
+git clone https://github.com/pieye/nimbus-ros.git
 cd ..
 source /opt/ros/melodic/setup.bash
 rosdep update && rosdep install --from-paths --ignore-src src -y

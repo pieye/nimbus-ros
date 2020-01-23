@@ -10,18 +10,14 @@
 #include <sstream>
 
 namespace nimbus{
-    WebSocketClient::WebSocketClient(unsigned char * addr, bool continuousTrig, 
-                    double port, double jsonPort, 
-                    int rcvTimeout, int pingTimeout, 
+    WebSocketClient::WebSocketClient(const std::string addr, bool continuousTrig, 
+                    double port, double jsonPort,
                     int reconnectIntents, double imgBufSize, ros::NodeHandle& nh) : _nh(nh) 
     {
         this->_address = addr;
         this->_streamPort = port;
-        // this->_streamURL = "ws://%s:%d/stream", addr, port;
         this->_jsonPort = jsonPort;
 
-        this->_rcvTimeout = rcvTimeout;
-        this->_pingTimeout = pingTimeout;
         this->_reconnectIntents = reconnectIntents;
 
         this->_imgBufSize = imgBufSize;
@@ -140,7 +136,9 @@ namespace nimbus{
 
     void WebSocketClient::connect()
     {
-        this->web_id = endpoint.connect("ws://192.168.0.69:8080/stream");
+        _streamURL = "ws://" + _address + ":" + std::to_string(_streamPort) + "/stream";
+        std::cout << "Web socket stream address: " << _streamURL.c_str() << std::endl;
+        this->web_id = endpoint.connect(_streamURL.c_str());
         metadata = endpoint.get_metadata(this->web_id);
         if (metadata) {
             std::cout << metadata.get() << std::endl;
@@ -239,7 +237,9 @@ namespace nimbus{
         struct curl_slist *headers = NULL;
         CURLcode res;
         std::string readBuffer;
-        unsigned char * url = this->_address;       //ToDo Change this to string
+        _jsonURL = "http://" + _address + ":" + std::to_string(_jsonPort) + "/jsonrpc";
+        std::cout << "JSON RPC stream address: " << _jsonURL.c_str() << std::endl;
+        unsigned char * url = (unsigned char *)_jsonURL.c_str();       //ToDo Change this to string
         long httpCode(0);
         std::unique_ptr<std::string> httpData(new std::string());
         const std::string result_string;
