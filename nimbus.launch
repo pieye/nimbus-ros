@@ -1,0 +1,12 @@
+<launch>
+    <arg name="downsampling" default="1" doc="downsampling factor for the pointcloud"/>
+
+    <node pkg="nimbus_ros" type="nimbus_ros_node" name="nimbus_ros_node" output="screen" required="true">
+        <param name="downsampling" value="$(arg downsampling)"/>
+        <remap from="pointcloud" to="/nimbus/pointcloud"/>
+        <remap from="range_image" to="/nimbus/range_image"/>
+        <remap from="intensity_image" to="/nimbus/intensity_image"/>
+    </node>
+   
+    <node pkg="tf" type="static_transform_publisher" name="nimbus_transform" args="0 1 0 -1.57 1.57 0 /nimbus /world 1000"/>
+</launch>
