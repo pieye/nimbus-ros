@@ -12,7 +12,7 @@ git clone https://github.com/pieye/nimbus-userland.git
 ``` 
 
 * [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
-* [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on ian OR run the following install script: 
+* [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on manually OR run the following install script: 
 ``` 
 sudo ./install.sh
 ``` 
