@@ -11,8 +11,8 @@ cd ~/catkin_ws/src
 git clone https://github.com/pieye/nimbus-userland.git
 ``` 
 
-* [Install](https://github.com/pieye/nimbus-userland/blob/master/ME.md) the required software packages for nimbus
-* [Install ROS Melodic from Source](https://github.com/curl/curl)  on ian OR run the following install script: 
+* [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
+* [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on ian OR run the following install script: 
 ``` 
 sudo ./install.sh
 ``` 
@@ -35,7 +35,7 @@ export ROS_MASTER_URI=http://192.168.1.1:11311
 ```
 roscore
 ```
-* Start RVIZ on your laptop:
+* Start RVIZ on your machine:
 ```
 rviz
 ```
@@ -53,3 +53,11 @@ It should start if everything works as expected.
 
 * Starting RVIZ on any correcly setup device with a monitor, a poincloud and two images should be visible as shwon here:
 <img src="./assets/nimbus_ros.gif" align="center">
+
+
+## 4. Configure the driver to your needs
+it is possible to adjust the parameters that have an impact on the amount of transmitted data.
+* A 1GBit/s ethernet connection to the Raspberry Pi is highly recommended. If this is given you can launch the default configuration without making any changes.
+* If you only have a 100MBit/s Interface you can load the given preset by changing the default.yaml to fast_ethernet.yaml in the launch file (launch/nimbus.launch). This will reduce the resolution!
+* If you need to reduce the bandwitdh even further (e.g. wifi) but still need a reliable point cloud, you can replace the config against the low_bandwitdh.yaml This will heavily reduce the resolution!
+* Furthermore it is possible to adjust the parameters to your own needs.
