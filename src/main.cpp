@@ -69,7 +69,7 @@ void imageCallback(void* unused0, void* img, void* unused1) {
                 nimbus_cloud->points[i].z         =  NAN;
                 nimbus_cloud->points[i].intensity =  NAN;
                 range_image.data[i]               = 0;
-                intensity_image.data[i]           = ampl[i]/20;
+                intensity_image.data[i]           = std::min(std::max(50+ampl[i]/40, 0), 255);
             }
         }
     nimbus_seq_del(img); //<- free the image pointer this call is necessary to return img resource to nimbus
