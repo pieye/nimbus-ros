@@ -49,6 +49,7 @@ const int XYZ_to_m = 5000;  //<-- to be determined. Correct value missings
 ros::NodeHandle* g_ptr_nh = nullptr;
 
 //Callback to get measurement data directly from nimbus
+//~3ms runtime on Pi4
 void imageCallback(void* unused0, void* img, void* unused1) {
     
     uint16_t* ampl = nimbus_seq_get_amplitude(img);

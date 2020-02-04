@@ -12,7 +12,7 @@ git clone https://github.com/pieye/nimbus-userland.git
 ``` 
 
 * [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
-* [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on ian OR run the following install script: 
+* [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on manually OR run the following install script: 
 ``` 
 sudo ./install.sh
 ``` 
@@ -65,7 +65,6 @@ it is possible to adjust the parameters that have an impact on the amount of tra
 * If you only have a 100MBit/s Interface you can load the given preset by changing the default.yaml to fast_ethernet.yaml in the launch file (launch/nimbus.launch). This will reduce the resolution!
 * If you need to reduce the bandwitdh even further (e.g. wifi) but still need a reliable point cloud, you can replace the config against the low_bandwitdh.yaml This will heavily reduce the resolution!
 * Furthermore it is possible to adjust the parameters to your own needs.
-
 
 ## 5. Start developing your own Software for the Nimbus 3D
 In addition to the this ROS driver template packages for your future C++ or Python software is included in the package "nimbus_example_c". You can run it by executing:
