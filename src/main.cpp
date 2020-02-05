@@ -24,6 +24,7 @@
  */
 
 #include <nimbusPreprocessInterface.h>
+#include <unistd.h>
 #include <algorithm>
 #include <ros/ros.h>
 #include <ros/console.h>
@@ -36,17 +37,16 @@
 #include <chrono>  // for high_resolution_clock
 
 typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;
-PointCloud::Ptr nimbus_cloud(new PointCloud);
-PointCloud::Ptr nimbus_cloud_filtered(new PointCloud);
-
-sensor_msgs::Image range_image;
-sensor_msgs::Image intensity_image;
+//
 
 const int img_width = 352;
 const int img_height = 286;
 const int XYZ_to_m = 5000;  //<-- to be determined. Correct value missings
 
-ros::NodeHandle* g_ptr_nh = nullptr;
+ros::NodeHandle* g_ptr_nh                 = nullptr;
+ros::Publisher* g_ptr_pointcloud_pub      = nullptr;
+ros::Publisher* g_ptr_range_image_pub     = nullptr;
+ros::Publisher* g_ptr_intensity_image_pub = nullptr;
 
 //Callback to get measurement data directly from nimbus
 //~3ms runtime on Pi4
@@ -58,6 +58,29 @@ void imageCallback(void* unused0, void* img, void* unused1) {
     int16_t* z = nimbus_seq_get_z(img);
     uint8_t* conf = nimbus_seq_get_confidence(img);
     ImgHeader_t* header = nimbus_seq_get_header(img);
+
+    bool downsampling = false;
+    bool pub_intes_image = false;
+    bool pub_range_image = false;
+    float downsampling_voxel_size = 0.05;
+
+    //Define point cloud and images
+    PointCloud::Ptr nimbus_cloud(new PointCloud);
+    nimbus_cloud->points.resize(img_width*img_height);
+    nimbus_cloud->width = img_width;
+    nimbus_cloud->height = img_height;
+    nimbus_cloud->is_dense = false;        //<-- because invalid points are being set to NAN
+    nimbus_cloud->header.frame_id = "nimbus";
+    sensor_msgs::Image range_image;
+    range_image.width = img_width;
+    range_image.height = img_height;
+    range_image.encoding = "mono8";
+    sensor_msgs::Image intensity_image;
+    range_image.data.resize(img_width*img_height);
+    intensity_image.width = img_width;
+    intensity_image.height = img_height;
+    intensity_image.encoding = "mono8";
+    intensity_image.data.resize(img_width*img_height);
 
     auto start = std::chrono::high_resolution_clock::now();
     //Move valid points into the point cloud and the corresponding images
@@ -80,22 +103,42 @@ void imageCallback(void* unused0, void* img, void* unused1) {
                 intensity_image.data[i]           = std::min(std::max(50+ampl[i]/40, 0), 255);
             }
         }
+    nimbus_seq_del(img); //<- free the image pointer this call is necessary to return img resource to nimbus
+
+    //get rosparam dyncamically
+    ros::param::get("/nimbus_ros_node/intensity_image", pub_intes_image);
+    ros::param::get("/nimbus_ros_node/range_image", pub_range_image);
+    ros::param::get("/nimbus_ros_node/downsampling", downsampling);
+    ros::param::get("/nimbus_ros_node/downsampling_voxel_size", downsampling_voxel_size);
+    pcl_conversions::toPCL(ros::Time::now(), nimbus_cloud->header.stamp);
+    
+    //Downsampling of Pointcloud if needed
+    if(downsampling == false)
+        g_ptr_pointcloud_pub->publish(nimbus_cloud);
+    else{
+        pcl::VoxelGrid<pcl::PointXYZI> sor;
+        sor.setInputCloud (nimbus_cloud);
+        sor.setLeafSize (downsampling_voxel_size, downsampling_voxel_size, downsampling_voxel_size);
+        PointCloud::Ptr nimbus_cloud_filtered(new PointCloud);
+        sor.filter (*nimbus_cloud_filtered);
+        g_ptr_pointcloud_pub->publish(nimbus_cloud_filtered);
+    }
+    
+    //only publish images if required
+    if(pub_range_image == true)
+        g_ptr_range_image_pub->publish(range_image);
+    if(pub_intes_image == true)
+        g_ptr_intensity_image_pub->publish(intensity_image);
+
+    ros::spinOnce();
 
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - start;
     std::cout << "Elapsed time: " << elapsed.count() << " s\n";
-
-    nimbus_seq_del(img); //<- free the image pointer this call is necessary to return img resource to nimbus
 }
 
 int main(int argc, char** argv)
 {
-    bool downsampling = false;
-    bool pub_intes_image = false;
-    bool pub_range_image = false;
-    float downsampling_voxel_size = 0.05;
-    int frame_rate = 10;
-
     ros::init(argc, argv, "nibus_ros");
     ros::NodeHandle nh;
     g_ptr_nh = &nh;
@@ -103,63 +146,23 @@ int main(int argc, char** argv)
     ros::Publisher pointcloud_pub = g_ptr_nh->advertise<PointCloud>("pointcloud", 1);
     ros::Publisher range_image_pub = g_ptr_nh->advertise<sensor_msgs::Image>("range_image", 1);
     ros::Publisher intensity_image_pub = g_ptr_nh->advertise<sensor_msgs::Image>("intensity_image", 1);
-
-    //Define point cloud
-    nimbus_cloud->points.resize(img_width*img_height);
-    nimbus_cloud->width = img_width;
-    nimbus_cloud->height = img_height;
-    nimbus_cloud->is_dense = false;        //<-- because invalid points have been set to nan
-    nimbus_cloud->header.frame_id = "nimbus";
-
-    //Define projected range image
-    range_image.width = img_width;
-    range_image.height = img_height;
-    range_image.encoding = "mono8";
-    range_image.data.resize(img_width*img_height);
-    
-    //Define projected intensity image
-    intensity_image.width = img_width;
-    intensity_image.height = img_height;
-    intensity_image.encoding = "mono8";
-    intensity_image.data.resize(img_width*img_height);
+    g_ptr_pointcloud_pub = &pointcloud_pub;
+    g_ptr_range_image_pub = &range_image_pub;
+    g_ptr_intensity_image_pub = &intensity_image_pub;
 
     ROS_INFO_STREAM("Nimbus-userland version: " << nimbus_get_version());
 
     if (nimbus_preproc_init()) {
         //nimbus_preproc_set_user_data((void*)nh);
-        nimbus_preproc_seq_cb(imageCallback);
-    
+        int frame_rate = 10;
         ros::param::get("/nimbus_ros_node/frame_rate", frame_rate);
 
         ros::Rate r(frame_rate);
         while (g_ptr_nh->ok())
         {
-            //get rosparam dyncamically
-            ros::param::get("/nimbus_ros_node/intensity_image", pub_intes_image);
-            ros::param::get("/nimbus_ros_node/range_image", pub_range_image);
-            ros::param::get("/nimbus_ros_node/downsampling", downsampling);
-            ros::param::get("/nimbus_ros_node/downsampling_voxel_size", downsampling_voxel_size);
-
-            pcl_conversions::toPCL(ros::Time::now(), nimbus_cloud->header.stamp);
-
-            //Downsampling of Pointcloud if needed
-            if(downsampling == false)
-                pointcloud_pub.publish(nimbus_cloud);
-            else{
-                pcl::VoxelGrid<pcl::PointXYZI> sor;
-                sor.setInputCloud (nimbus_cloud);
-                sor.setLeafSize (downsampling_voxel_size, downsampling_voxel_size, downsampling_voxel_size);
-                sor.filter (*nimbus_cloud_filtered);
-                pointcloud_pub.publish(nimbus_cloud_filtered);
-            }
-
-            //only publish images if required
-            if(pub_range_image == true)
-                range_image_pub.publish(range_image);
-            if(pub_intes_image == true)
-                intensity_image_pub.publish(intensity_image);
-
-            ros::spinOnce();
+            nimbus_preproc_seq_cb(imageCallback);
+            ROS_WARN_STREAM("TEST!");
+            //usleep(500000);
             r.sleep();
         }
     }
