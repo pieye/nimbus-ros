@@ -20,7 +20,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/Quaternion.h>
 
-typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
+typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;
 
 int main(int argc, char** argv)
 {
@@ -59,10 +59,11 @@ int main(int argc, char** argv)
         if(!res.empty()){
             for(int i = 0; i < res[0].size(); i++)
             {
-                pcl::PointXYZ basic_points;
+                pcl::PointXYZI basic_points;
                 basic_points.x = res[0][i];
                 basic_points.y = res[1][i];
                 basic_points.z = res[2][i];
+                basic_points.intensity = res[3][i];
                 new_cloud->points.push_back(basic_points);
             }
             cloud->points = new_cloud->points;
