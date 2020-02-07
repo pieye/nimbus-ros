@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(nimbus_ros)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11 -O3 -march=native -DNDEBUG)
+add_compile_options(-mfpu=neon -std=c++11 -O3 -march=native -ftree-parallelize-loops=4 -DNDEBUG)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
