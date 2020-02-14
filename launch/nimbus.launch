@@ -1,0 +1,12 @@
+<launch>
+    <arg name="config_file" default="$(find nimbus_ros)/config/default.yaml" />
+
+    <node pkg="nimbus_ros" type="nimbus_ros_node" name="nimbus_ros_node" output="screen" required="true">
+        <remap from="pointcloud" to="/nimbus/pointcloud"/>
+        <remap from="range_image" to="/nimbus/range_image"/>
+        <remap from="intensity_image" to="/nimbus/intensity_image"/>
+        <rosparam command="load" file="$(arg config_file)" />
+    </node>
+   
+    <node pkg="tf" type="static_transform_publisher" name="nimbus_transform" args="0 1 0 -1.57 1.57 0 /nimbus /world 1000"/>
+</launch>
