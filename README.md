@@ -19,6 +19,28 @@ Under development
     * [Install ROS Melodic for Ubuntu](http://wiki.ros.org/melodic/Installation/Ubuntu)
 2. Create Catkin Work Place
 
+
+
+# Nimbus 3D - ROS driver.
+
+## 1. Installation
+
+* [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
+* Clone this Repository in the src folder of your ROS workspace 
+``` 
+mkdir -p ~/catkin_nimbus_ws/src
+cd ~/catkin_nimbus_ws/src
+git clone --branch=low-level_implementation https://github.com/pieye/nimbus-ros.git
+``` 
+* [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on manually OR run the following install script: 
+``` 
+sudo ./install.sh
+``` 
+* Build `nimbus-ros`
+``` 
+cd ~/catkin_nimbus_ws
+catkin_make
+
 ``` 
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
