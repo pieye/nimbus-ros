@@ -66,8 +66,11 @@ it is possible to adjust the parameters that have an impact on the amount of tra
 * If you need to reduce the bandwitdh even further (e.g. wifi) but still need a reliable point cloud, you can replace the config against the low_bandwitdh.yaml This will heavily reduce the resolution!
 * Furthermore it is possible to adjust the parameters to your own needs.
 
+Depending on the given setup it might be useful to adjust the auto exposure.
+If object are moving fast or a minimum framerate should be achieved it can help do disable hdr and set a max value for the exposure time.
+
 ## 5. Start developing your own Software for the Nimbus 3D
-In addition to the this ROS driver template packages for your future C++ or Python software is included in the package "nimbus_example_c". You can run it by executing:
+In addition to the this ROS driver template packages for your future C++ software is included in the package "nimbus_example_c". You can run it by executing:
 ```
 rosrun nimbus_example_c example
 ```

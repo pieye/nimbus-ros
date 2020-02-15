@@ -38,9 +38,11 @@ typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;
 PointCloud::Ptr m_nimbus_cloud(new PointCloud);
 sensor_msgs::Image m_range_image;
 sensor_msgs::Image m_intensity_image;
+AutoExposureParams_t m_params;
 
 //Global variables
 bool m_new_image = false;
+bool m_auto_exposure_update = false;
 const int m_img_width = 352;
 const int m_img_height = 286;
 const float m_XYZ_to_m = 0.0002;  //<-- to be determined. Correct value missings
@@ -48,13 +50,17 @@ const float m_XYZ_to_m = 0.0002;  //<-- to be determined. Correct value missings
 
 //Callback to get measurement data directly from nimbus
 void imageCallback(void* unused0, void* img, void* unused1) {
+    if(m_auto_exposure_update){
+        bool set_exposure = nimbus_autoexposure_set_params(&m_params);
+        m_auto_exposure_update = false;
+    }
     uint16_t* ampl = nimbus_seq_get_amplitude(img);
     int16_t* x = nimbus_seq_get_x(img);
     int16_t* y = nimbus_seq_get_y(img);
     int16_t* z = nimbus_seq_get_z(img);
     uint8_t* conf = nimbus_seq_get_confidence(img);
     ImgHeader_t* header = nimbus_seq_get_header(img);
-
+    
     //Move valid points into the point cloud and the corresponding images
     for(int i = 0; i < (m_img_width*m_img_height); i++)
         {
@@ -117,6 +123,11 @@ int main(int argc, char** argv)
         bool pub_intes_image = false;
         bool pub_m_range_image = false;
         float downsampling_voxel_size = 0.05;
+        float ampl_single;
+        int   max_exposure;
+        float hdr_factor;
+        float ampl_hdr;
+        bool  hdr_mode;
 
         nimbus_preproc_seq_cb(imageCallback);
 
@@ -130,7 +141,21 @@ int main(int argc, char** argv)
                 ros::param::get("/nimbus_ros_node/range_image", pub_m_range_image);
                 ros::param::get("/nimbus_ros_node/downsampling", downsampling);
                 ros::param::get("/nimbus_ros_node/downsampling_voxel_size", downsampling_voxel_size);
-
+                ros::param::get("/nimbus_ros_node/ampl_single", ampl_single);
+                ros::param::get("/nimbus_ros_node/max_exposure", max_exposure);
+                ros::param::get("/nimbus_ros_node/hdr_factor", hdr_factor);
+                ros::param::get("/nimbus_ros_node/ampl_hdr", ampl_hdr);
+                ros::param::get("/nimbus_ros_node/hdr_mode", hdr_mode);
+                if((float(ampl_single) != m_params.ampl_single) || (int(max_exposure) != m_params.max_exposure) ||  (float(hdr_factor) != m_params.hdr_factor)
+                        || (float(ampl_hdr) != m_params.ampl_hdr) || (bool(hdr_mode) != m_params.hdr_mode)){
+                    m_auto_exposure_update = true;
+                    m_params.ampl_single   = ampl_single; 
+                    m_params.max_exposure  = max_exposure;
+                    m_params.hdr_factor    = hdr_factor;
+                    m_params.ampl_hdr      = ampl_hdr;
+                    m_params.hdr_mode      = hdr_mode;
+                }
+                    
                 pcl_conversions::toPCL(ros::Time::now(), m_nimbus_cloud->header.stamp);
 
                 //Downsampling of Pointcloud if needed
