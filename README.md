@@ -2,20 +2,27 @@
 
 # Nimbus 3D - ROS driver.
 
+# Nimbus 3D - ROS driver.
+
 ## 1. Installation
 
+* [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
 * Clone this Repository in the src folder of your ROS workspace 
 ``` 
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone https://github.com/pieye/nimbus-userland.git
+git clone --branch=low-level_implementation https://github.com/pieye/nimbus-ros.git
 ``` 
-
-* [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
 * [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on manually OR run the following install script: 
 ``` 
+cd nimbus-ros/scripts
 sudo ./install.sh
 ``` 
+* Build `nimbus-ros`
+``` 
+cd ~/catkin_ws
+catkin_make
+```
     
 ## 2. Configure [ROS to run accros multiple machines](http://wiki.ros.org/ROS/Tutorials/MultipleMachines)
 
