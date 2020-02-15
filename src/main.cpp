@@ -146,6 +146,8 @@ int main(int argc, char** argv)
                 ros::param::get("/nimbus_ros_node/hdr_factor", hdr_factor);
                 ros::param::get("/nimbus_ros_node/ampl_hdr", ampl_hdr);
                 ros::param::get("/nimbus_ros_node/hdr_mode", hdr_mode);
+
+                //update exposure parameters if they have changed
                 if((float(ampl_single) != m_params.ampl_single) || (int(max_exposure) != m_params.max_exposure) ||  (float(hdr_factor) != m_params.hdr_factor)
                         || (float(ampl_hdr) != m_params.ampl_hdr) || (bool(hdr_mode) != m_params.hdr_mode)){
                     m_auto_exposure_update = true;

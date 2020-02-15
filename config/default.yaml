@@ -1,5 +1,5 @@
 #Set ROS publishing rate - independet from the actual frame rate of the camera (it adjust dynamically)
-frame_rate: 10
+frame_rate: 20
 
 #Activate Downsampling and set the size of the generated voxels in meter. (0.05 = 5cm)
 #This is helpful to reduce the bandwith in the network or to limit the data comming to your algorithm afterwards

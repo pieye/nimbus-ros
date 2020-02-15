@@ -2,8 +2,6 @@
 
 # Nimbus 3D - ROS driver.
 
-# Nimbus 3D - ROS driver.
-
 ## 1. Installation
 
 * [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
