@@ -6,10 +6,6 @@
 # Nimbus 3D Camera ROS driver.
 Under development
 
-|Branch    | Status    |
-|----------|-----------|
-|master    |[![Build Status](https://travis-ci.org/lernfabrik/nimbus-ros.svg?branch=master)](https://travis-ci.org/lernfabrik/nimbus-ros)|
-
 ## Installation
 
 1. Required Packages
