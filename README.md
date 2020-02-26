@@ -80,3 +80,28 @@ In addition to the this ROS driver template packages for your future C++ softwar
 rosrun nimbus_example_c example
 ```
 It includes basic ROS functionallity to start your development.
+
+## 6. Error
+There is a possibility of encountering the bellow error upon running the nimbus node.
+```
+FATAL [nimbusRaw.cpp->errno_exit:68]	
+	*******	 EXIT trigger caused by LOG(FATAL) entry: 
+	"VIDIOC_S_FMT error 16, Device or resource busy
+*******	STACKDUMP *******
+```
+This error is due to nimbus camera is currently used by nimbus-server. This service automatically started during the start-up. Follow the following steps to remove this error.
+
+* Run `sudo systemctl status nimbusServer.service` to check the staute od nimbus server. 
+```
+● nimbusServer.service - Nimbus streaming server
+   Loaded: loaded (/etc/systemd/system/nimbusServer.service; enabled; vendor preset: enabled)
+   Active: active (running) since Tue 2020-02-25 15:41:17 GMT; 15h ago
+ Main PID: 575 (nimbusServer)
+    Tasks: 85 (limit: 4035)
+   Memory: 12.4M
+   CGroup: /system.slice/nimbusServer.service
+           └─575 /usr/local/bin/nimbusServer
+``` 
+* You need to stop the active service to run ROS node. By running 
+`sudo systemctl stop nimbusServer.service`
+* Before running the ROS node check the service status again to confirm  `Active: inactive (dead)`
