@@ -16,15 +16,17 @@ find_package(catkin REQUIRED COMPONENTS
   tf2
 )
 
+find_package(Boost REQUIRED COMPONENTS system)
+
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS include
   LIBRARIES nimbus_driver
   CATKIN_DEPENDS geometry_msgs pcl_ros roscpp rospy sensor_msgs tf2
 #  DEPENDS system_lib
 )
 
 include_directories(
-# include
+ include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
