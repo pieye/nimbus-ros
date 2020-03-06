@@ -22,6 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Nimbus.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <arm_neon.h>
 #include <nimbusPreprocessInterface.h>
 #include <unistd.h>
@@ -30,12 +31,50 @@
 #include <ros/console.h>
 #include <pcl_ros/point_cloud.h>
 #include <pcl/filters/voxel_grid.h>
+#include <pcl/point_cloud.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <sensor_msgs/Image.h>
+#include <chrono>
+
 
 //Define point cloud and images
 typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;
 PointCloud::Ptr m_nimbus_cloud(new PointCloud);
+
+//#define PCL_NO_PRECOMPILE
+//#include <pcl/pcl_macros.h>
+//#include <pcl/point_types.h>
+//#include <pcl/point_cloud.h>
+//#include <pcl/io/pcd_io.h>
+//
+//struct NimbusPointType
+//{
+//  PCL_ADD_POINT4D;                  // preferred way of adding a XYZ+padding
+//  uint16_t ampl;
+//  uint16_t dist;
+//  uint8_t conf;
+//  uint16_t phase0;
+//  uint16_t phase90;
+//  uint16_t phase180;
+//  uint16_t phase270;
+//  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;     // make sure our new allocators are aligned
+//} EIGEN_ALIGN16;                    // enforce SSE padding for correct memory alignment
+//
+//POINT_CLOUD_REGISTER_POINT_STRUCT (NimbusPointType,           // here we assume a XYZ + "test" (as fields)
+//                                   (float, x, x)
+//                                   (float, y, y)
+//                                   (float, z, z)
+//                                   (uint16_t, ampl, ampl)
+//                                   (uint16_t, dist, dist)
+//                                   (uint8_t, conf, conf)
+//                                   (uint16_t, phase0, phase0)
+//                                   (uint16_t, phase90, phase90)
+//                                   (uint16_t, phase180, phase180)
+//                                   (uint16_t, phase270, phase270)
+//
+//
+//)
+
 sensor_msgs::Image m_range_image;
 sensor_msgs::Image m_intensity_image;
 AutoExposureParams_t m_params;
@@ -54,36 +93,18 @@ void imageCallback(void* unused0, void* img, void* unused1) {
         bool set_exposure = nimbus_autoexposure_set_params(&m_params);
         m_auto_exposure_update = false;
     }
-    uint16_t* ampl = nimbus_seq_get_amplitude(img);
-    int16_t* x = nimbus_seq_get_x(img);
-    int16_t* y = nimbus_seq_get_y(img);
-    int16_t* z = nimbus_seq_get_z(img);
-    uint8_t* conf = nimbus_seq_get_confidence(img);
-    ImgHeader_t* header = nimbus_seq_get_header(img);
+
+    PointCloud::Ptr temp_cloud = nimbus_seq_get_pcl_ptr(img);
     
-    //Move valid points into the point cloud and the corresponding images
-    for(int i = 0; i < (m_img_width*m_img_height); i++)
-        {
-            if(conf[i] == 0){
-                //cast x,y,z to float and multiply by m_XYZ_to_m
-                int16x4_t xyz_vec = {x[i], y[i], z[i], z[i]};
-                float32x4_t result = vmulq_n_f32(vcvtq_f32_s32(vmovl_s16(xyz_vec)), m_XYZ_to_m);
-                m_nimbus_cloud->points[i].x         = result[0];
-                m_nimbus_cloud->points[i].y         = result[1];
-                m_nimbus_cloud->points[i].z         = result[2];
-                m_nimbus_cloud->points[i].intensity = ampl[i];
-                m_range_image.data[i]               = std::min(std::max(z[i]/200, 0), 255);
-                m_intensity_image.data[i]           = std::min(std::max(50+ampl[i]/40, 0), 255);
-            }
-            else{
-                m_nimbus_cloud->points[i].x         = NAN;
-                m_nimbus_cloud->points[i].y         = NAN;
-                m_nimbus_cloud->points[i].z         = NAN;
-                m_nimbus_cloud->points[i].intensity = NAN;
-                m_range_image.data[i]               = 0;
-                m_intensity_image.data[i]           = std::min(std::max(50+ampl[i]/40, 0), 255);
-            }
-        }
+    auto start = std::chrono::steady_clock::now();
+    for(int i = 0; i < (m_img_width*m_img_height); i++){
+        m_nimbus_cloud->points[i].x         = temp_cloud->points[i].x;
+        m_nimbus_cloud->points[i].y         = temp_cloud->points[i].y;
+        m_nimbus_cloud->points[i].z         = temp_cloud->points[i].z;
+        m_nimbus_cloud->points[i].intensity = temp_cloud->points[i].intensity;
+    }
+    auto end = std::chrono::steady_clock::now();
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
 
     nimbus_seq_del(img); //<- free the image pointer this call is necessary to return img resource to nimbus
     m_new_image = true;
@@ -170,6 +191,8 @@ int main(int argc, char** argv)
                     PointCloud::Ptr m_nimbus_cloud_filtered(new PointCloud);
                     sor.filter (*m_nimbus_cloud_filtered);
                     pointcloud_pub.publish(m_nimbus_cloud_filtered);
+                    pointcloud_pub.publish(m_nimbus_cloud);
+
                 }
                 
                 //only publish images if required
