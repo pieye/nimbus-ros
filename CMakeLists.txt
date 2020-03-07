@@ -17,6 +17,9 @@ find_package(catkin REQUIRED COMPONENTS
   tf2
 )
 
+find_package (Threads)
+
+
 catkin_package(
    INCLUDE_DIRS include
 #  LIBRARIES nimbus_ros_driver
@@ -37,4 +40,4 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}_node src/main.cpp)
-target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${PCL_INCLUDE_DIRS} /usr/local/lib/libnimbus-preprocessing.so)
+target_link_libraries(${PROJECT_NAME}_node ${CMAKE_THREAD_LIBS_INIT} ${catkin_LIBRARIES} ${PCL_INCLUDE_DIRS} /usr/local/lib/libnimbus-preprocessing.so)
