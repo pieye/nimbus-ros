@@ -21,7 +21,7 @@ find_package (Threads)
 
 
 catkin_package(
-   INCLUDE_DIRS include
+#   INCLUDE_DIRS include
 #  LIBRARIES nimbus_ros_driver
    CATKIN_DEPENDS geometry_msgs pcl_ros roscpp rospy sensor_msgs std_msgs tf2
 #  DEPENDS system_lib
@@ -34,7 +34,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
+#  include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
