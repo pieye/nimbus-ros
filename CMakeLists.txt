@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(nimbus_ros)
-
+cmake_policy(SET CMP0048 NEW)
+project(nimbus_ros VERSION 0.9)
 
 ## Use C++11
 add_definitions(-std=c++11)
 
-
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-mfpu=neon -O3 -march=native -ftree-parallelize-loops=4 -DNDEBUG)
-
+add_compile_options(-mfpu=neon -Ofast -march=native -ftree-parallelize-loops=4 -DNDEBUG)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -22,7 +20,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf2
 )
-
 
 ###################################
 ## catkin specific configuration ##
@@ -40,7 +37,6 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
-
 ###########
 ## Build ##
 ###########
@@ -55,13 +51,13 @@ include_directories(
 
 ## Declare a cpp library
 add_library(${PROJECT_NAME}_node
-   src/driver.cpp
+   src/Algorithm.cpp
 )
 
 ## Declare cpp executables
 add_executable(${PROJECT_NAME}
   src/${PROJECT_NAME}_node.cpp
-  src/RosPackageTemplate.cpp
+  src/nimbus_ros.cpp
 )
 
 ## Add dependencies to exported targets, like ROS msgs or srvs

@@ -7,6 +7,7 @@ downsampling: false
 downsampling_voxel_size: 0.05
 
 #Enable or Disable the projected range or/and intensity image
+pointcloud: true
 range_image: true
 intensity_image: true
 
@@ -15,4 +16,7 @@ ampl_single: 300.0
 max_exposure: 32766 #multiplied by 0.00001241 is time in seconds
 hdr_factor : 0.5
 ampl_hdr: 800.0
-hdr_mode: false
+hdr_mode: true
+
+#Pointcloud scaling
+XYZ_to_m: 0.00009587526
