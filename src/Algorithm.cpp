@@ -78,18 +78,13 @@ void cloud_to_image(PointCloud::Ptr cloud_ptr, sensor_msgs::Image &temp_intens, 
             temp_range.data[i*COLOR_CHANELS]          = rgb_range.r;
             temp_range.data[i*COLOR_CHANELS+1]        = rgb_range.g;
             temp_range.data[i*COLOR_CHANELS+2]        = rgb_range.b;
-            RgbColor rgb_intens = HsvToRgb(std::min(std::max((cloud_ptr->points[i].intensity/10), 0.0f), 255.0f),255,255);
-            temp_intens.data[i*COLOR_CHANELS]         = rgb_intens.r;
-            temp_intens.data[i*COLOR_CHANELS+1]       = rgb_intens.g;
-            temp_intens.data[i*COLOR_CHANELS+2]       = rgb_intens.b;
+            temp_intens.data[i]                       = std::min(std::max((log(cloud_ptr->points[i].intensity)*30), 0.0f), 255.0f);
         }
         else{
             temp_range.data[i*COLOR_CHANELS]          = 0;
             temp_range.data[i*COLOR_CHANELS+1]        = 0;
             temp_range.data[i*COLOR_CHANELS+2]        = 0;
-            temp_intens.data[i*COLOR_CHANELS]         = 0;
-            temp_intens.data[i*COLOR_CHANELS+1]       = 0;
-            temp_intens.data[i*COLOR_CHANELS+2]       = 0;
+            temp_intens.data[i]                       = std::min(std::max((log(cloud_ptr->points[i].intensity)*30), 0.0f), 255.0f);
         }
     }
 }

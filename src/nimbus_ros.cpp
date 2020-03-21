@@ -53,40 +53,45 @@ bool  hdr_mode;
 
 //Callback to get measurement data directly from nimbus
 void imageCallback(void* unused0, void* img, void* unused1) {
-    ImgHeader_t* header = nimbus_seq_get_header(img);
-    uint16_t* ampl      = nimbus_seq_get_amplitude(img);
-    int16_t* x          = nimbus_seq_get_x(img);
-    int16_t* y          = nimbus_seq_get_y(img);
-    int16_t* z          = nimbus_seq_get_z(img);
-    uint8_t* conf       = nimbus_seq_get_confidence(img);
+    if(img != nullptr){
+        ImgHeader_t* header = nimbus_seq_get_header(img);
+        uint16_t* ampl      = nimbus_seq_get_amplitude(img);
+        int16_t* x          = nimbus_seq_get_x(img);
+        int16_t* y          = nimbus_seq_get_y(img);
+        int16_t* z          = nimbus_seq_get_z(img);
+        uint8_t* conf       = nimbus_seq_get_confidence(img);
 
-    //Move valid points into the point cloud and the corresponding images
-    for(int i = 0; i < (IMG_WIDTH*IMG_HEIGHT); i++)
-        {
-            if(conf[i] == 0){
-                //cast x,y,z to float and multiply by m_XYZ_to_m
-                int16x4_t xyz_vec = {x[i], y[i], z[i], z[i]};
-                float32x4_t result = vmulq_n_f32(vcvtq_f32_s32(vmovl_s16(xyz_vec)), m_XYZ_to_m);
-                m_nimbus_cloud->points[i].x         = result[0];
-                m_nimbus_cloud->points[i].y         = result[1];
-                m_nimbus_cloud->points[i].z         = result[2];
-                m_nimbus_cloud->points[i].intensity = ampl[i];
+        //Move valid points into the point cloud and the corresponding images
+        for(int i = 0; i < (IMG_WIDTH*IMG_HEIGHT); i++)
+            {
+                if(conf[i] == 0){
+                    //cast x,y,z to float and multiply by m_XYZ_to_m
+                    int16x4_t xyz_vec = {x[i], y[i], z[i], z[i]};
+                    float32x4_t result = vmulq_n_f32(vcvtq_f32_s32(vmovl_s16(xyz_vec)), m_XYZ_to_m);
+                    m_nimbus_cloud->points[i].x         = result[0];
+                    m_nimbus_cloud->points[i].y         = result[1];
+                    m_nimbus_cloud->points[i].z         = result[2];
+                    m_nimbus_cloud->points[i].intensity = ampl[i];
+                }
+                else{
+                    m_nimbus_cloud->points[i].x         = NAN;
+                    m_nimbus_cloud->points[i].y         = NAN;
+                    m_nimbus_cloud->points[i].z         = NAN;
+                    m_nimbus_cloud->points[i].intensity = NAN;
+                }
             }
-            else{
-                m_nimbus_cloud->points[i].x         = NAN;
-                m_nimbus_cloud->points[i].y         = NAN;
-                m_nimbus_cloud->points[i].z         = NAN;
-                m_nimbus_cloud->points[i].intensity = NAN;
-            }
+
+        if(m_auto_exposure_update){
+            bool set_exposure = nimbus_autoexposure_set_params(&m_params);
+            m_auto_exposure_update = false;
         }
 
-    if(m_auto_exposure_update){
-        bool set_exposure = nimbus_autoexposure_set_params(&m_params);
-        m_auto_exposure_update = false;
+        nimbus_seq_del(img); //<- free the image pointer this call is necessary to return img resource to nimbus
+        m_new_image = true;
     }
-
-    nimbus_seq_del(img); //<- free the image pointer this call is necessary to return img resource to nimbus
-    m_new_image = true;
+    else{
+        ROS_FATAL_STREAM("Callback failed!");
+    }
 }
 
 void update_params(){
