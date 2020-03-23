@@ -1,5 +1,5 @@
-<img src="./assets/PIEYE_Logo_RGB_POS.png" align="right" title="pieye logo" width="150" >
-<img src="./assets/IWT.png" align="right" title="pieye logo" width="110" >
+<img src="./assets/PIEYE_Logo_RGB_POS.png" align="right" title="pieye logo" width="170" >
+<img src="./assets/IWT.png" align="right" title="pieye logo" width="120" >
 
 # Nimbus 3D - ROS driver.
 
