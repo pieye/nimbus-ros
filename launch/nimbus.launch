@@ -4,6 +4,9 @@
         <remap from="pointcloud" to="/nimbus/pointcloud"/>
         <remap from="range_image" to="/nimbus/range_image"/>
         <remap from="intensity_image" to="/nimbus/intensity_image"/>
+        <remap from="info/temperature" to="/nimbus/info/temperature"/>
+        <remap from="info/exposure" to="/nimbus/info/exposure"/>
+        <remap from="info/distance" to="/nimbus/info/distance"/>
         <rosparam command="load" file="$(arg config_file)" />
     </node>
     <node pkg="tf" type="static_transform_publisher" name="nimbus_transform" args="0 1 0 -1.57 1.57 0 /nimbus /world 1000"/>

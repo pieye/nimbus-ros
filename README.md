@@ -74,6 +74,23 @@ it is possible to adjust the parameters that have an impact on the amount of tra
 Depending on the given setup it might be useful to adjust the auto exposure.
 If objects are moving fast or a minimum framerate should be achieved it can help do disable hdr and set a max value for the exposure time. The desired exposure can also be adjusted.
 
+Furthermore it is possible to change the following parameters during runtime:
+```
+rosparam set 
+                /nimbus_ros_node/XYZ_to_m
+                /nimbus_ros_node/ampl_hdr
+                /nimbus_ros_node/ampl_single
+                /nimbus_ros_node/downsampling
+                /nimbus_ros_node/downsampling_voxel_size
+                /nimbus_ros_node/hdr_factor
+                /nimbus_ros_node/hdr_mode
+                /nimbus_ros_node/intensity_image
+                /nimbus_ros_node/max_exposure
+                /nimbus_ros_node/pointcloud
+                /nimbus_ros_node/range_image
+```
+
+
 ## 5. Start developing your own Software for the Nimbus 3D
 In addition to the this ROS driver template packages for your future C++ software is included in the package "nimbus_example_c". You can run it by executing:
 ```

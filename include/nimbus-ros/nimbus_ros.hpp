@@ -26,9 +26,10 @@
 #include "nimbus-ros/Algorithm.hpp"
 #include <algorithm>
 #include <unistd.h>
+#include <std_msgs/Float32.h>
 
 /**************************** defines  ******************************/
-
+#define CRITICAL_TEMP 70.0
 
 /************************* global variables *************************/
 /**
@@ -43,7 +44,9 @@ extern bool m_auto_exposure_update;
 extern PointCloud::Ptr m_nimbus_cloud;
 extern sensor_msgs::Image m_range_image;
 extern sensor_msgs::Image m_intensity_image;
-
+extern std_msgs::Float32  m_temp;
+extern std_msgs::Float32  m_exposure;
+extern std_msgs::Float32  m_dist;
 
 /**
  * Auto Exposure Parameter to 

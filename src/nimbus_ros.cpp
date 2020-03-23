@@ -32,6 +32,9 @@ bool m_auto_exposure_update = false;
 PointCloud::Ptr m_nimbus_cloud(new PointCloud);
 sensor_msgs::Image m_range_image;
 sensor_msgs::Image m_intensity_image;
+std_msgs::Float32  m_temp;
+std_msgs::Float32  m_exposure;
+std_msgs::Float32  m_dist;
 
 AutoExposureParams_t m_params;
 
@@ -53,13 +56,16 @@ bool  hdr_mode;
 
 //Callback to get measurement data directly from nimbus
 void imageCallback(void* unused0, void* img, void* unused1) {
-    if(img != nullptr){
+    if(img != nullptr && ros::ok()){
         ImgHeader_t* header = nimbus_seq_get_header(img);
+        m_temp.data         = header->temperature/10;
+        m_exposure.data     = header->exposure*0.00001241;
         uint16_t* ampl      = nimbus_seq_get_amplitude(img);
         int16_t* x          = nimbus_seq_get_x(img);
         int16_t* y          = nimbus_seq_get_y(img);
         int16_t* z          = nimbus_seq_get_z(img);
         uint8_t* conf       = nimbus_seq_get_confidence(img);
+        m_dist.data         = z[IMG_WIDTH*(IMG_HEIGHT/2) + IMG_WIDTH/2]*m_XYZ_to_m;
 
         //Move valid points into the point cloud and the corresponding images
         for(int i = 0; i < (IMG_WIDTH*IMG_HEIGHT); i++)

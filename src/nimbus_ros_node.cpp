@@ -35,9 +35,12 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "nibus_ros");
     ros::NodeHandle nh;
 
-    ros::Publisher pointcloud_pub = nh.advertise<PointCloud>("pointcloud", 1);
-    ros::Publisher range_image_pub = nh.advertise<sensor_msgs::Image>("range_image", 1);
-    ros::Publisher intensity_image_pub = nh.advertise<sensor_msgs::Image>("intensity_image", 1);
+    ros::Publisher pointcloud_pub       = nh.advertise<PointCloud>("pointcloud", 1);
+    ros::Publisher range_image_pub      = nh.advertise<sensor_msgs::Image>("range_image", 1);
+    ros::Publisher intensity_image_pub  = nh.advertise<sensor_msgs::Image>("intensity_image", 1);
+    ros::Publisher info_temp_pub        = nh.advertise<std_msgs::Float32>("info/temperature", 1);
+    ros::Publisher info_exposure_pub    = nh.advertise<std_msgs::Float32>("info/exposure", 1);
+    ros::Publisher info_dist_pub        = nh.advertise<std_msgs::Float32>("info/distance", 1);
 
     //Initialize Pointcloud and Images
     m_nimbus_cloud->points.resize(IMG_WIDTH*IMG_HEIGHT);
@@ -83,7 +86,6 @@ int main(int argc, char** argv)
                         sor.filter (*m_nimbus_cloud_filtered);
                         pointcloud_pub.publish(m_nimbus_cloud_filtered);
                         pointcloud_pub.publish(m_nimbus_cloud);
-
                     }
                 }
                 
@@ -95,6 +97,13 @@ int main(int argc, char** argv)
                     intensity_image_pub.publish(m_intensity_image);
 
                 m_new_image = false;
+
+                info_temp_pub.publish(m_temp);
+                info_exposure_pub.publish(m_exposure);
+                info_dist_pub.publish(m_dist);
+
+                if(m_temp.data > CRITICAL_TEMP)
+                    ROS_WARN_STREAM("Critical temperature of Nimbus: " << m_temp.data << "°C");
                 ros::spinOnce();
             }
             r.sleep();
