@@ -104,6 +104,8 @@ int main(int argc, char** argv)
 
                 if(m_temp.data > CRITICAL_TEMP)
                     ROS_WARN_STREAM("Critical temperature of Nimbus: " << m_temp.data << "°C");
+                if(m_temp.data == NAN)
+                    ROS_FATAL_STREAM("I²C error, check raspi-config!");
                 ros::spinOnce();
             }
             r.sleep();
