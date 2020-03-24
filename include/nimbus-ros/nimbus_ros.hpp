@@ -67,7 +67,7 @@ extern float ampl_single;
 extern int   max_exposure;
 extern float hdr_factor;
 extern float ampl_hdr;
-extern bool  hdr_mode;
+extern int   exposure_mode;
 
 
 /********************** function declarations ***********************/

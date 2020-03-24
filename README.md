@@ -84,7 +84,7 @@ rosparam set
                 /nimbus_ros_node/downsampling
                 /nimbus_ros_node/downsampling_voxel_size
                 /nimbus_ros_node/hdr_factor
-                /nimbus_ros_node/hdr_mode
+                /nimbus_ros_node/exposure_mode
                 /nimbus_ros_node/intensity_image
                 /nimbus_ros_node/max_exposure
                 /nimbus_ros_node/pointcloud

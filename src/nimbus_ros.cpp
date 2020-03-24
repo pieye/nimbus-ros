@@ -49,7 +49,7 @@ float ampl_single;
 int   max_exposure;
 float hdr_factor;
 float ampl_hdr;
-bool  hdr_mode;
+int   exposure_mode;
 
 
 /********************** function declarations ***********************/
@@ -111,17 +111,17 @@ void update_params(){
     ros::param::get("/nimbus_ros_node/max_exposure", max_exposure);
     ros::param::get("/nimbus_ros_node/hdr_factor", hdr_factor);
     ros::param::get("/nimbus_ros_node/ampl_hdr", ampl_hdr);
-    ros::param::get("/nimbus_ros_node/hdr_mode", hdr_mode);
+    ros::param::get("/nimbus_ros_node/exposure_mode", exposure_mode);
 
     //update exposure parameters if they have changed
     if((float(ampl_single) != m_params.ampl_single) || (int(max_exposure) != m_params.max_exposure) ||  
         (float(hdr_factor) != m_params.hdr_factor) || (float(ampl_hdr) != m_params.ampl_hdr) ||
-        (bool(hdr_mode) != m_params.hdr_mode)){
+        (int(exposure_mode) != m_params.exposure_mode)){
             m_auto_exposure_update = true;
             m_params.ampl_single   = ampl_single; 
             m_params.max_exposure  = max_exposure;
             m_params.hdr_factor    = hdr_factor;
             m_params.ampl_hdr      = ampl_hdr;
-            m_params.hdr_mode      = hdr_mode;
+            m_params.exposure_mode = exposure_mode;
     }
 }
