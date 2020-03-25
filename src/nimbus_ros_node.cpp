@@ -85,7 +85,6 @@ int main(int argc, char** argv)
                         PointCloud::Ptr m_nimbus_cloud_filtered(new PointCloud);
                         sor.filter (*m_nimbus_cloud_filtered);
                         pointcloud_pub.publish(m_nimbus_cloud_filtered);
-                        pointcloud_pub.publish(m_nimbus_cloud);
                     }
                 }
                 
