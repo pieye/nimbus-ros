@@ -78,17 +78,17 @@ If objects are moving fast or a minimum framerate should be achieved it can help
 Furthermore it is possible to change the following parameters during runtime:
 ```
 rosparam set 
-                /nimbus_ros_node/XYZ_to_m
-                /nimbus_ros_node/ampl_hdr
-                /nimbus_ros_node/ampl_single
-                /nimbus_ros_node/downsampling
-                /nimbus_ros_node/downsampling_voxel_size
-                /nimbus_ros_node/hdr_factor
-                /nimbus_ros_node/exposure_mode
-                /nimbus_ros_node/intensity_image
-                /nimbus_ros_node/max_exposure
-                /nimbus_ros_node/pointcloud
-                /nimbus_ros_node/range_image
+                /nimbus_ros_node/XYZ_to_m		  [0.0 - 1.0]
+                /nimbus_ros_node/ampl_hdr		  [0 - 3000]
+                /nimbus_ros_node/ampl_single		  [0 - 3000]
+                /nimbus_ros_node/downsampling		  [true | false]
+                /nimbus_ros_node/downsampling_voxel_size  [0.0 - 1.0]
+                /nimbus_ros_node/hdr_factor		  [0.0 - 1.0]
+                /nimbus_ros_node/exposure_mode		  [-1 (manual), 0 (default), 1 (Auto), 2 (HDR)]
+                /nimbus_ros_node/intensity_image	  [true | false]
+                /nimbus_ros_node/max_exposure		  [0 - 32766]
+                /nimbus_ros_node/pointcloud		  [true | false]
+                /nimbus_ros_node/range_image              [true | false]
 ```
 
 
