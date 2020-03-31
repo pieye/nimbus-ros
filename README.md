@@ -10,7 +10,7 @@
 ``` 
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone --branch=low-level_implementation https://github.com/pieye/nimbus-ros.git
+git clone https://github.com/pieye/nimbus-ros.git
 ``` 
 * [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on manually OR run the following install script: 
 ``` 
