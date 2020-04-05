@@ -10,7 +10,7 @@ To perform the following installation 2GB memory is required. If this is not ava
 sudo dphys-swapfile swapoff
 sudo nano /etc/dphys-swapfile
 ``` 
-Change this line ``` CONF_SWAPSIZE=1024``` 
+Change these lines ``` CONF_SWAPSIZE=3096``` ```CONF_MAXSWAP=4096```
 ``` 
 dphys-swapfile setup
 sudo dphys-swapfile swapon
