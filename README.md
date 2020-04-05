@@ -27,8 +27,7 @@ git clone --branch=low-level_implementation https://github.com/pieye/nimbus-ros.
 ``` 
 * [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on manually OR run the following install script: 
 ``` 
-cd nimbus-ros/scripts
-./install.sh
+./nimbus-ros/scripts/install.sh
 ``` 
 * Build `nimbus-ros`
 ``` 
