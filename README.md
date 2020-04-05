@@ -10,7 +10,7 @@ To perform the following installation 2GB memory is required. If this is not ava
 sudo dphys-swapfile swapoff
 sudo nano /etc/dphys-swapfile
 ``` 
-Change these lines ``` CONF_SWAPSIZE=3096``` ```CONF_MAXSWAP=4096```
+Change these lines ``` CONF_SWAPSIZE=3000``` ```CONF_MAXSWAP=4096```
 ``` 
 dphys-swapfile setup
 sudo dphys-swapfile swapon
@@ -23,7 +23,7 @@ sudo dphys-swapfile swapon
 ``` 
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone --branch=low-level_implementation https://github.com/pieye/nimbus-ros.git
+git clone https://github.com/pieye/nimbus-ros.git
 ``` 
 * [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on manually OR run the following install script: 
 ``` 
