@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 sudo apt-get install python-pip python-rosdep python-rosinstall-generator python-wstool python-rosinstall build-essential
-sudo apt-get install python-setuptools python-empy
+sudo apt-get install python-setuptools python-empy python-defusedxml python-netifaces
 sudo rosdep init
 rosdep update
 mkdir ~/ros_install_ws/
