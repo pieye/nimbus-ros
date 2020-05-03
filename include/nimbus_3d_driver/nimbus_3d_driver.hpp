@@ -1,5 +1,5 @@
 /**
- * @file nimbus_ros.hpp
+ * @file nimbus_3d_driver.hpp
  * @brief ROS <-> Nimbus Interface 
  *
  * @copyright Copyright 2020 Bjarne Johannsen
@@ -23,7 +23,7 @@
 
 /**************************** includes ******************************/
 #include <nimbusPreprocessInterface.h>
-#include "nimbus-ros/Algorithm.hpp"
+#include "nimbus_3d_driver/Algorithm.hpp"
 #include <algorithm>
 #include <unistd.h>
 #include <std_msgs/Float32.h>
@@ -46,7 +46,6 @@ extern sensor_msgs::Image m_range_image;
 extern sensor_msgs::Image m_intensity_image;
 extern std_msgs::Float32  m_temp;
 extern std_msgs::Float32  m_exposure;
-extern std_msgs::Float32  m_dist;
 
 /**
  * Auto Exposure Parameter to 

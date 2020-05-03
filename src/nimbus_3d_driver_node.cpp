@@ -28,7 +28,7 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <tf2_ros/static_transform_broadcaster.h>
-#include "nimbus-ros/nimbus_ros.hpp"
+#include "nimbus_3d_driver/nimbus_3d_driver.hpp"
 
 int main(int argc, char** argv)
 {
@@ -40,7 +40,6 @@ int main(int argc, char** argv)
     ros::Publisher intensity_image_pub  = nh.advertise<sensor_msgs::Image>("intensity_image", 1);
     ros::Publisher info_temp_pub        = nh.advertise<std_msgs::Float32>("info/temperature", 1);
     ros::Publisher info_exposure_pub    = nh.advertise<std_msgs::Float32>("info/exposure", 1);
-    ros::Publisher info_dist_pub        = nh.advertise<std_msgs::Float32>("info/distance", 1);
 
     //Initialize Pointcloud and Images
     m_nimbus_cloud->points.resize(IMG_WIDTH*IMG_HEIGHT);
@@ -63,7 +62,7 @@ int main(int argc, char** argv)
 
         nimbus_preproc_seq_cb(imageCallback);
 
-        ros::param::get("/nimbus_ros_node/frame_rate", frame_rate);
+        ros::param::get("/nimbus_3d_driver_node/frame_rate", frame_rate);
         ros::Rate r(frame_rate);
         while (nh.ok())
         {
@@ -99,7 +98,6 @@ int main(int argc, char** argv)
 
                 info_temp_pub.publish(m_temp);
                 info_exposure_pub.publish(m_exposure);
-                info_dist_pub.publish(m_dist);
 
                 if(m_temp.data > CRITICAL_TEMP)
                     ROS_WARN_STREAM("Critical temperature of Nimbus: " << m_temp.data << "°C");

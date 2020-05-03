@@ -27,9 +27,9 @@ git clone https://github.com/pieye/nimbus-ros.git
 ``` 
 * [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on manually OR run the following install script: 
 ``` 
-./nimbus-ros/scripts/install.sh
+./nimbus_3d_driver/scripts/install.sh
 ``` 
-* Build `nimbus-ros`
+* Build `nimbus_3d_driver`
 ``` 
 cd ~/catkin_ws
 catkin_make
@@ -37,7 +37,7 @@ catkin_make
     
 ## 2. Configure [ROS to run accros multiple machines](http://wiki.ros.org/ROS/Tutorials/MultipleMachines)
 
-The following diagram shows the possible architectures for using your Nimbus 3D. The ROS driver "nimbus_ros" is running on the Raspberry Pi and publishes the pointcloud. In this guide the ROS master is also running  on the Pi, but it could run on any other machine in your local network. The Pointcloud is afterwards visualized on another Computer with a Display connected e.g. Laptop. Your algorithms to process the captured data can run locally on your Raspberry or any other device in the local network. 
+The following diagram shows the possible architectures for using your Nimbus 3D. The ROS driver "nimbus_3d_driver" is running on the Raspberry Pi and publishes the pointcloud. In this guide the ROS master is also running  on the Pi, but it could run on any other machine in your local network. The Pointcloud is afterwards visualized on another Computer with a Display connected e.g. Laptop. Your algorithms to process the captured data can run locally on your Raspberry or any other device in the local network. 
 
 
 <img src="./assets/nimbus_ros.png" align="center">
@@ -69,7 +69,7 @@ It should start if everything works as expected.
 * The given launch file starts the nimbus node and a static coordinate transform after executing it on the Raspberry.
 ```
     source devel/setup.bash 
-    roslaunch nimbus_ros nimbus.launch
+    roslaunch nimbus_3d_driver nimbus.launch
   ```  
 * It is possible to adjust the topics where the Pointcloud, Intensity Image, and Range Image are published. Simply set a new topic name in the launch file. This is necessary when using multiple Nimbus cameras in your local network at the same time.
 
@@ -90,16 +90,16 @@ If objects are moving fast or a minimum framerate should be achieved it can help
 Furthermore it is possible to change the following parameters during runtime:
 ```
 rosparam set 
-                /nimbus_ros_node/XYZ_to_m		  [0.0 - 1.0]
-                /nimbus_ros_node/amplitude		  [0 - 3000]
-                /nimbus_ros_node/downsampling		  [true | false]
-                /nimbus_ros_node/downsampling_voxel_size  [0.0 - 1.0]
-                /nimbus_ros_node/hdr_factor		  [0.0 - 1.0]
-                /nimbus_ros_node/exposure_mode		  [-1 (manual), 0 (default), 1 (Auto), 2 (HDR)]
-                /nimbus_ros_node/intensity_image	  [true | false]
-                /nimbus_ros_node/max_exposure		  [0 - 32766]
-                /nimbus_ros_node/pointcloud		  [true | false]
-                /nimbus_ros_node/range_image              [true | false]
+                /nimbus_3d_driver_node/XYZ_to_m		  [0.0 - 1.0]
+                /nimbus_3d_driver_node/amplitude		  [0 - 3000]
+                /nimbus_3d_driver_node/downsampling		  [true | false]
+                /nimbus_3d_driver_node/downsampling_voxel_size  [0.0 - 1.0]
+                /nimbus_3d_driver_node/hdr_factor		  [0.0 - 1.0]
+                /nimbus_3d_driver_node/exposure_mode		  [-1 (manual), 0 (default), 1 (Auto), 2 (HDR)]
+                /nimbus_3d_driver_node/intensity_image	  [true | false]
+                /nimbus_3d_driver_node/max_exposure		  [0 - 32766]
+                /nimbus_3d_driver_node/pointcloud		  [true | false]
+                /nimbus_3d_driver_node/range_image              [true | false]
 ```
 
 

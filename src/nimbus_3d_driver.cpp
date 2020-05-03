@@ -1,5 +1,5 @@
 /**
- * @file nimbus_ros.cpp
+ * @file nimbus_3d_driver.cpp
  * @brief ROS <-> Nimbus Interface 
  *
  * @copyright Copyright 2020 Bjarne Johannsen
@@ -22,7 +22,7 @@
  */
 
 /**************************** includes ******************************/
-#include "nimbus-ros/nimbus_ros.hpp"
+#include "nimbus_3d_driver/nimbus_3d_driver.hpp"
 
 
 /************************* global variables *************************/
@@ -34,7 +34,6 @@ sensor_msgs::Image m_range_image;
 sensor_msgs::Image m_intensity_image;
 std_msgs::Float32  m_temp;
 std_msgs::Float32  m_exposure;
-std_msgs::Float32  m_dist;
 
 AutoExposureParams_t m_params;
 
@@ -64,7 +63,6 @@ void imageCallback(void* unused0, void* img, void* unused1) {
         int16_t* y          = nimbus_seq_get_y(img);
         int16_t* z          = nimbus_seq_get_z(img);
         uint8_t* conf       = nimbus_seq_get_confidence(img);
-        m_dist.data         = z[IMG_WIDTH*(IMG_HEIGHT/2) + IMG_WIDTH/2]*m_XYZ_to_m;
 
         //Move valid points into the point cloud and the corresponding images
         for(int i = 0; i < (IMG_WIDTH*IMG_HEIGHT); i++)
@@ -100,22 +98,22 @@ void imageCallback(void* unused0, void* img, void* unused1) {
 }
 
 void update_params(){
-    ros::param::get("/nimbus_ros_node/pointcloud", pub_pointcloud);
-    ros::param::get("/nimbus_ros_node/intensity_image", pub_intes_image);
-    ros::param::get("/nimbus_ros_node/range_image", pub_m_range_image);
-    ros::param::get("/nimbus_ros_node/XYZ_to_m", m_XYZ_to_m);
-    ros::param::get("/nimbus_ros_node/downsampling", downsampling);
-    ros::param::get("/nimbus_ros_node/downsampling_voxel_size", downsampling_voxel_size);
-    ros::param::get("/nimbus_ros_node/amplitude", amplitude);
-    ros::param::get("/nimbus_ros_node/max_exposure", max_exposure);
-    ros::param::get("/nimbus_ros_node/hdr_factor", hdr_factor);
-    ros::param::get("/nimbus_ros_node/exposure_mode", exposure_mode);
+    ros::param::get("/nimbus_3d_driver_node/pointcloud", pub_pointcloud);
+    ros::param::get("/nimbus_3d_driver_node/intensity_image", pub_intes_image);
+    ros::param::get("/nimbus_3d_driver_node/range_image", pub_m_range_image);
+    ros::param::get("/nimbus_3d_driver_node/XYZ_to_m", m_XYZ_to_m);
+    ros::param::get("/nimbus_3d_driver_node/downsampling", downsampling);
+    ros::param::get("/nimbus_3d_driver_node/downsampling_voxel_size", downsampling_voxel_size);
+    ros::param::get("/nimbus_3d_driver_node/amplitude", amplitude);
+    ros::param::get("/nimbus_3d_driver_node/max_exposure", max_exposure);
+    ros::param::get("/nimbus_3d_driver_node/hdr_factor", hdr_factor);
+    ros::param::get("/nimbus_3d_driver_node/exposure_mode", exposure_mode);
 
     //update exposure parameters if they have changed
     if((float(amplitude) != m_params.amplitude) || (int(max_exposure) != m_params.max_exposure) ||  
         (float(hdr_factor) != m_params.hdr_factor) || (int(exposure_mode) != m_params.exposure_mode)){
             m_auto_exposure_update = true;
-            m_params.amplitude   = amplitude; 
+            m_params.amplitude     = amplitude; 
             m_params.max_exposure  = max_exposure;
             m_params.hdr_factor    = hdr_factor;
             m_params.exposure_mode = exposure_mode;

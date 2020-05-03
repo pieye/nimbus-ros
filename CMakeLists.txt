@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 cmake_policy(SET CMP0048 NEW)
-project(nimbus_ros VERSION 0.9)
+project(nimbus_3d_driver VERSION 0.10)
 
 ## Use C++11
 add_definitions(-std=c++11)
@@ -15,7 +15,6 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   pcl_ros
   roscpp
-  rospy
   sensor_msgs
   std_msgs
   tf2
@@ -33,7 +32,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
    INCLUDE_DIRS include
    #${PROJECT_NAME}_node
-   CATKIN_DEPENDS geometry_msgs pcl_ros roscpp rospy sensor_msgs std_msgs tf2
+   CATKIN_DEPENDS geometry_msgs pcl_ros roscpp sensor_msgs std_msgs tf2
 #  DEPENDS system_lib
 )
 
@@ -57,7 +56,7 @@ add_library(${PROJECT_NAME}_node
 ## Declare cpp executables
 add_executable(${PROJECT_NAME}
   src/${PROJECT_NAME}_node.cpp
-  src/nimbus_ros.cpp
+  src/nimbus_3d_driver.cpp
 )
 
 ## Add dependencies to exported targets, like ROS msgs or srvs
