@@ -91,8 +91,7 @@ Furthermore it is possible to change the following parameters during runtime:
 ```
 rosparam set 
                 /nimbus_ros_node/XYZ_to_m		  [0.0 - 1.0]
-                /nimbus_ros_node/ampl_hdr		  [0 - 3000]
-                /nimbus_ros_node/ampl_single		  [0 - 3000]
+                /nimbus_ros_node/amplitude		  [0 - 3000]
                 /nimbus_ros_node/downsampling		  [true | false]
                 /nimbus_ros_node/downsampling_voxel_size  [0.0 - 1.0]
                 /nimbus_ros_node/hdr_factor		  [0.0 - 1.0]
