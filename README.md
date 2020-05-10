@@ -4,7 +4,7 @@
 # Nimbus 3D - ROS driver.
 
 ## 0. Preparation
-A raspberry Pi4 is highly recommended, because only it has a real 1GBit/s ethernet interface, which is needed for high frame rates. In addition, the Pi4 is needed for recommended image processing, since only the Pi4 has sufficient CPU resources left.
+A raspberry Pi4 is highly recommended, because only it has a real 1GBit/s ethernet interface, which is needed for high frame rates. In addition, the Pi4 is recommended for local image processing, since only the Pi4 has sufficient CPU resources left.
 To perform the following installation 4GB memory is required. If this is not available, the swap size must be increased accordingly:
 ``` 
 sudo dphys-swapfile swapoff
