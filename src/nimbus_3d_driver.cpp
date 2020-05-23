@@ -57,12 +57,13 @@ void imageCallback(void* unused0, void* img, void* unused1) {
     if(img != nullptr && ros::ok()){
         ImgHeader_t* header = nimbus_seq_get_header(img);
         m_temp.data         = header->temperature/10;
-        m_exposure.data     = header->exposure*0.00001241;
+        m_exposure.data     = header->exposure_long*0.00001241;
         uint16_t* ampl      = nimbus_seq_get_amplitude(img);
         int16_t* x          = nimbus_seq_get_x(img);
         int16_t* y          = nimbus_seq_get_y(img);
         int16_t* z          = nimbus_seq_get_z(img);
         uint8_t* conf       = nimbus_seq_get_confidence(img);
+        m_nimbus_cloud->header.stamp = header->timestamp;
 
         //Move valid points into the point cloud and the corresponding images
         for(int i = 0; i < (IMG_WIDTH*IMG_HEIGHT); i++)

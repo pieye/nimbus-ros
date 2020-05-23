@@ -102,15 +102,18 @@ rosparam set
                 /nimbus_3d_driver_node/range_image              [true | false]
 ```
 
+## 5. Clock synchronization
+Each pointcloud includes the timestamp of the initial image aquisition. If this is needed across devices, a clock synchronization protocal such as NTP should be used. PTP hardware timestamping is not available on the Raspberry Pi. [Chrony](https://www.linuxtechi.com/sync-time-in-linux-server-using-chrony) is as often used tool for that task.
 
-## 5. Start developing your own Software for the Nimbus 3D
+
+## 6. Start developing your own Software for the Nimbus 3D
 In addition to the this ROS driver template packages for your future C++ software is included in the package "nimbus_example_c". You can run it by executing:
 ```
 rosrun nimbus_example_c example
 ```
 It includes basic ROS functionallity to start your development.
 
-## 6. Error
+## 7. FAQ
 There is a possibility of encountering the bellow error upon running the nimbus node.
 ```
 FATAL [nimbusRaw.cpp->errno_exit:68]	

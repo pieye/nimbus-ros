@@ -70,8 +70,6 @@ int main(int argc, char** argv)
                 //get rosparam dyncamically
                 update_params();
 
-                pcl_conversions::toPCL(ros::Time::now(), m_nimbus_cloud->header.stamp);
-
                 //only publish pointcloud if required
                 if(pub_pointcloud == true){
                     //Downsampling of Pointcloud if needed
