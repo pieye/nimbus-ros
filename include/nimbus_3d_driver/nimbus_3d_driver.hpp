@@ -37,6 +37,7 @@
  */
 extern bool m_new_image;
 extern bool m_auto_exposure_update;
+extern double m_timestamp;
 
 /**
  * Pointcloud and ROS Images to represent intensity and range values.

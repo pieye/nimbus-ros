@@ -28,6 +28,7 @@
 /************************* global variables *************************/
 bool m_new_image = false;
 bool m_auto_exposure_update = false;
+extern double m_timestamp = 0;
 
 PointCloud::Ptr m_nimbus_cloud(new PointCloud);
 sensor_msgs::Image m_range_image;
@@ -63,12 +64,13 @@ void imageCallback(void* unused0, void* img, void* unused1) {
         int16_t* y          = nimbus_seq_get_y(img);
         int16_t* z          = nimbus_seq_get_z(img);
         uint8_t* conf       = nimbus_seq_get_confidence(img);
-        m_nimbus_cloud->header.stamp = header->timestamp;
+
+        m_timestamp = static_cast<double>(header->timestamp);
 
         //Move valid points into the point cloud and the corresponding images
         for(int i = 0; i < (IMG_WIDTH*IMG_HEIGHT); i++)
             {
-                if(conf[i] == 0){
+                if(conf[i] == 0 || conf[i] == 4){
                     //cast x,y,z to float and multiply by m_XYZ_to_m
                     int16x4_t xyz_vec = {x[i], y[i], z[i], z[i]};
                     float32x4_t result = vmulq_n_f32(vcvtq_f32_s32(vmovl_s16(xyz_vec)), m_XYZ_to_m);

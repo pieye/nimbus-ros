@@ -13,9 +13,9 @@ intensity_image: true
 
 #Settings for the Auto Exposure
 amplitude: 1000.0
-max_exposure: 32766 #multiplied by 0.00001241 is time in seconds
+max_exposure: 65535 #multiplied by 0.00001241 is time in seconds
 hdr_factor: 0.05
-exposure_mode: 1 #-1: manual (set max_exposure), 0: default, 1: Auto Exposure, 2: Multi Exposure
+exposure_mode: 1 #0: manual (set max_exposure), 1: manual_hdr (set max_exposure), 2: Auto Exposure, 3: Auto Exposure HDR
 
 #Pointcloud scaling
 XYZ_to_m: 0.00037
