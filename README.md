@@ -50,14 +50,17 @@ The following diagram shows the possible architectures for using your Nimbus 3D.
 
 
 * We now configure ROS to run the master on the Raspberry and access the data via another machine running ROS Melodic with RVIZ installed
-* Add this line to the .bashrc of your other machine (laptop), after adapting the IP to your Raspberry Pi if you are using Linux:
+* Add this line to the .bashrc of your other machine (laptop), after adapting the IP to your Raspberry Pi if you are using Linux. You also need to add the IP of your local machine (ROS_IP):
+
 ```
 nano ~/.bashrc
 export ROS_MASTER_URI=http://192.168.1.1:11311
+export ROS_IP=192.168.1.1
 ```
 If you are using Windows you need to set it up as an enviroment variable:
 ```
 Name: ROS_MASTER_URI      Value: http://192.168.1.1:11311
+Name: ROS_IP      	  Value: 192.168.1.1
 ```
 * SSH into your Raspberry and run:
 ```
