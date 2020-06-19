@@ -10,7 +10,6 @@ mkdir -p ~/ros_catkin_ws
 cd ~/ros_catkin_ws
 rosinstall_generator perception --rosdistro melodic --deps --wet-only --tar > melodic-perception-wet.rosinstall
 wstool init src melodic-perception-wet.rosinstall
-cd ~/ros_catkin_ws
 rosdep install -y --from-paths src --ignore-src --rosdistro melodic -r --os=debian:buster
 sudo ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/melodic
 source /opt/ros/melodic/setup.bash
