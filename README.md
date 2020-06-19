@@ -3,14 +3,23 @@
 
 # Nimbus 3D - ROS driver.
 
-The following steps (0. Preparation & 1. Installation) are only required if you want to set it up yourself.
-Otherwise use our prepared [Raspberry OS (buster)](www.pieye.org) image.
-
-
-
 ## 0. Preparation
 A raspberry Pi4 is highly recommended, because only it has a real 1GBit/s ethernet interface, which is needed for high frame rates. In addition, the Pi4 is recommended for local image processing, since only the Pi4 has sufficient CPU resources left.
 
+The following step (1. Installation) are only required if you want to set it up yourself.
+Otherwise use our prepared [Raspberry OS (buster)](http://www.pieye.org) image.
+
+
+
+## 1. Installation
+
+* [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
+* Clone this Repository in the src folder of your ROS workspace 
+``` 
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/src
+git clone https://github.com/pieye/nimbus-ros.git
+``` 
 To perform the following installation 4GB memory is required. If this is not available, the swap size must be increased accordingly:
 ``` 
 sudo dphys-swapfile swapoff
@@ -22,15 +31,6 @@ dphys-swapfile setup
 sudo dphys-swapfile swapon
 ``` 
 
-## 1. Installation
-
-* [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
-* Clone this Repository in the src folder of your ROS workspace 
-``` 
-mkdir -p ~/catkin_ws/src
-cd ~/catkin_ws/src
-git clone https://github.com/pieye/nimbus-ros.git
-``` 
 * [Install ROS Melodic from Source](http://wiki.ros.org/ROSberryPi/Installing%20ROS%20Melodic%20on%20the%20Raspberry%20Pi) manually OR run the following install script: 
 ``` 
 ./nimbus_3d_driver/scripts/install.sh
