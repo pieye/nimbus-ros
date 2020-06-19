@@ -51,10 +51,12 @@ int main(int argc, char** argv)
     m_range_image.height = IMG_HEIGHT;
     m_range_image.encoding = "rgb8";
     m_range_image.data.resize(IMG_WIDTH*IMG_HEIGHT*COLOR_CHANELS);
+    m_range_image.step = IMAGE_WIDTH * COLOR_CHANELS;
     m_intensity_image.width = IMG_WIDTH;
     m_intensity_image.height = IMG_HEIGHT;
     m_intensity_image.encoding = "mono8";
     m_intensity_image.data.resize(IMG_WIDTH*IMG_HEIGHT);
+    m_intensity_image.step= IMAGE_WIDTH;
 
     ROS_INFO_STREAM("Nimbus-userland version: " << nimbus_get_version());
 
