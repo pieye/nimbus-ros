@@ -3,8 +3,14 @@
 
 # Nimbus 3D - ROS driver.
 
+The following steps (0. Preparation & 1. Installation) are only required if you want to set it up yourself.
+Otherwise use our prepared [Raspberry OS (buster)](www.pieye.org) image.
+
+
+
 ## 0. Preparation
 A raspberry Pi4 is highly recommended, because only it has a real 1GBit/s ethernet interface, which is needed for high frame rates. In addition, the Pi4 is recommended for local image processing, since only the Pi4 has sufficient CPU resources left.
+
 To perform the following installation 4GB memory is required. If this is not available, the swap size must be increased accordingly:
 ``` 
 sudo dphys-swapfile swapoff
