@@ -3,6 +3,13 @@
 
 # Nimbus 3D - ROS driver.
 
+## 0. Preparation
+A raspberry Pi4 is highly recommended, because only it has a real 1GBit/s ethernet interface, which is needed for high frame rates. In addition, the Pi4 is recommended for local image processing, since only the Pi4 has sufficient CPU resources left.
+
+The following step (1. Installation) is only required if you want to set it up yourself.
+Otherwise use our prepared [Raspberry Pi OS (buster)](https://drive.google.com/file/d/1Z9Cknz2BJZDOxbAcAShfr5Ql5rnv-605/view?usp=sharing) image.
+
+
 ## 1. Installation
 
 * [Install](https://github.com/pieye/nimbus-userland) the required software packages for nimbus
@@ -12,12 +19,24 @@ mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
 git clone https://github.com/pieye/nimbus-ros.git
 ``` 
-* [Install ROS Melodic from Source](http://wiki.ros.org/melodic/Installation/Source)  on manually OR run the following install script: 
+
+To perform the following installation 4GB memory is required. If this is not available, the swap size must be increased accordingly:
 ``` 
-cd nimbus-ros/scripts
-sudo ./install.sh
+sudo dphys-swapfile swapoff
+sudo nano /etc/dphys-swapfile
 ``` 
-* Build `nimbus-ros`
+
+Change these lines ``` CONF_SWAPSIZE=3000``` ```CONF_MAXSWAP=4096```
+``` 
+dphys-swapfile setup
+sudo dphys-swapfile swapon
+``` 
+
+* [Install ROS Melodic from Source](http://wiki.ros.org/ROSberryPi/Installing%20ROS%20Melodic%20on%20the%20Raspberry%20Pi) manually OR run the following install script: 
+``` 
+./nimbus_3d_driver/scripts/install.sh
+``` 
+* Build `nimbus_3d_driver`
 ``` 
 cd ~/catkin_ws
 catkin_make
@@ -25,21 +44,24 @@ catkin_make
     
 ## 2. Configure [ROS to run accros multiple machines](http://wiki.ros.org/ROS/Tutorials/MultipleMachines)
 
-The following diagram shows the possible architectures for using your Nimbus 3D. The ROS driver "nimbus_ros" is running on the Raspberry Pi and publishes the pointcloud. In this guide the ROS master is also running  on the Pi, but it could run on any other machine in your local network. The Pointcloud is afterwards visualized on another Computer with a Display connected e.g. Laptop. Your algorithms to process the captured data can run locally on your Raspberry or any other device in the local network. 
+The following diagram shows the possible architectures for using your Nimbus 3D. The ROS driver "nimbus_3d_driver" is running on the Raspberry Pi and publishes the pointcloud. In this guide the ROS master is also running  on the Pi, but it could run on any other machine in your local network. The Pointcloud is afterwards visualized on another Computer with a Display connected e.g. Laptop. Your algorithms to process the captured data can run locally on your Raspberry or any other device in the local network. 
 
 
 <img src="./assets/nimbus_ros.png" align="center">
 
 
 * We now configure ROS to run the master on the Raspberry and access the data via another machine running ROS Melodic with RVIZ installed
-* Add this line to the .bashrc of your other machine (laptop), after adapting the IP to your Raspberry Pi if you are using Linux:
+* Add this line to the .bashrc of your other machine (laptop), after adapting the IP to your Raspberry Pi if you are using Linux. You also need to add the IP of your local machine (ROS_IP):
+
 ```
 nano ~/.bashrc
 export ROS_MASTER_URI=http://192.168.1.1:11311
+export ROS_IP=192.168.1.1
 ```
 If you are using Windows you need to set it up as an enviroment variable:
 ```
 Name: ROS_MASTER_URI      Value: http://192.168.1.1:11311
+Name: ROS_IP      	  Value: 192.168.1.1
 ```
 * SSH into your Raspberry and run:
 ```
@@ -57,7 +79,7 @@ It should start if everything works as expected.
 * The given launch file starts the nimbus node and a static coordinate transform after executing it on the Raspberry.
 ```
     source devel/setup.bash 
-    roslaunch nimbus_ros nimbus.launch
+    roslaunch nimbus_3d_driver nimbus.launch
   ```  
 * It is possible to adjust the topics where the Pointcloud, Intensity Image, and Range Image are published. Simply set a new topic name in the launch file. This is necessary when using multiple Nimbus cameras in your local network at the same time.
 
@@ -78,28 +100,30 @@ If objects are moving fast or a minimum framerate should be achieved it can help
 Furthermore it is possible to change the following parameters during runtime:
 ```
 rosparam set 
-                /nimbus_ros_node/XYZ_to_m
-                /nimbus_ros_node/ampl_hdr
-                /nimbus_ros_node/ampl_single
-                /nimbus_ros_node/downsampling
-                /nimbus_ros_node/downsampling_voxel_size
-                /nimbus_ros_node/hdr_factor
-                /nimbus_ros_node/hdr_mode
-                /nimbus_ros_node/intensity_image
-                /nimbus_ros_node/max_exposure
-                /nimbus_ros_node/pointcloud
-                /nimbus_ros_node/range_image
+                /nimbus_3d_driver_node/XYZ_to_m		  [0.0 - 1.0]
+                /nimbus_3d_driver_node/amplitude		  [0 - 3000]
+                /nimbus_3d_driver_node/downsampling		  [true | false]
+                /nimbus_3d_driver_node/downsampling_voxel_size  [0.0 - 1.0]
+                /nimbus_3d_driver_node/hdr_factor		  [0.0 - 1.0]
+                /nimbus_3d_driver_node/exposure_mode		  [-1 (manual), 0 (default), 1 (Auto), 2 (HDR)]
+                /nimbus_3d_driver_node/intensity_image	  [true | false]
+                /nimbus_3d_driver_node/max_exposure		  [0 - 32766]
+                /nimbus_3d_driver_node/pointcloud		  [true | false]
+                /nimbus_3d_driver_node/range_image              [true | false]
 ```
 
+## 5. Clock synchronization
+Each pointcloud includes the timestamp of the initial image aquisition. If this is needed across devices, a clock synchronization protocal such as NTP should be used. PTP hardware timestamping is not available on the Raspberry Pi. [Chrony](https://www.linuxtechi.com/sync-time-in-linux-server-using-chrony) is as often used tool for that task.
 
-## 5. Start developing your own Software for the Nimbus 3D
+
+## 6. Start developing your own Software for the Nimbus 3D
 In addition to the this ROS driver template packages for your future C++ software is included in the package "nimbus_example_c". You can run it by executing:
 ```
 rosrun nimbus_example_c example
 ```
 It includes basic ROS functionallity to start your development.
 
-## 6. Error
+## 7. FAQ
 There is a possibility of encountering the bellow error upon running the nimbus node.
 ```
 FATAL [nimbusRaw.cpp->errno_exit:68]	

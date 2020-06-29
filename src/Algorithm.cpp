@@ -22,7 +22,7 @@
  */
  
  /**************************** includes ******************************/
-#include "nimbus-ros/Algorithm.hpp"
+#include "nimbus_3d_driver/Algorithm.hpp"
 
 
 /********************** function declarations ***********************/
