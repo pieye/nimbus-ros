@@ -7,7 +7,7 @@
 A raspberry Pi4 is highly recommended, because only it has a real 1GBit/s ethernet interface, which is needed for high frame rates. In addition, the Pi4 is recommended for local image processing, since only the Pi4 has sufficient CPU resources left.
 
 The following step (1. Installation) is only required if you want to set it up yourself.
-Otherwise use our prepared [Raspberry Pi OS (buster)](https://drive.google.com/file/d/1Z9Cknz2BJZDOxbAcAShfr5Ql5rnv-605/view?usp=sharing) image. In case you want the Raspberry Pi OS with all reccomendet software and desktop eviroment, use this [image](https://drive.google.com/file/d/1fcmqUKzDwh8j1kxWOJ3EQuXWw85Wz7dm/view?usp=sharing).
+Otherwise use our prepared [Raspberry Pi OS (buster)](https://cloud.pieye.org/index.php/s/XjcEaAw9keRf79S) images.
 
 
 ## 1. Installation
