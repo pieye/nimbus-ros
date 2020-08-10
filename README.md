@@ -9,6 +9,8 @@ A raspberry Pi4 is highly recommended, because only it has a real 1GBit/s ethern
 The following step (1. Installation) is only required if you want to set it up yourself.
 Otherwise use our prepared [Raspberry Pi OS (buster)](https://cloud.pieye.org/index.php/s/XjcEaAw9keRf79S) images.
 
+Fruthermore here is the official [documentation](https://nimbus-docs.readthedocs.io/en/latest/index.html).
+
 
 ## 1. Installation
 
