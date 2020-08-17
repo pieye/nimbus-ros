@@ -11,6 +11,6 @@ cd ~/ros_catkin_ws
 rosinstall_generator perception --rosdistro noetic --deps --wet-only --tar > noetic-perception-wet.rosinstall
 wstool init src noetic-perception-wet.rosinstall
 rosdep install -y --from-paths src --ignore-src --rosdistro noetic -r --os=debian:buster
-sudo src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/noetic -j1 -DPYTHON_EXECUTABLE=/usr/bin/python3
+sudo src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/noetic -j4 -DPYTHON_EXECUTABLE=/usr/bin/python3
 source /opt/ros/noetic/setup.bash
 echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
