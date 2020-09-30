@@ -7,7 +7,7 @@
 A raspberry Pi4 is highly recommended, because only it has a real 1GBit/s ethernet interface, which is needed for high frame rates. In addition, the Pi4 is recommended for local image processing, since only the Pi4 has sufficient CPU resources left.
 
 The following step (1. Installation) is only required if you want to set it up yourself.
-Otherwise use our prepared [Raspberry Pi OS (buster)](https://cloud.pieye.org/index.php/s/XjcEaAw9keRf79S) images.
+Otherwise use our prepared [Raspberry Pi OS (buster)](https://cloud.pieye.org/index.php/s/nimbus3D) images.
 
 Fruthermore here is the official [documentation](https://nimbus-docs.readthedocs.io/en/latest/index.html).
 
