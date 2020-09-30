@@ -36,7 +36,7 @@ sudo dphys-swapfile swapon
 
 * [Install ROS Melodic from Source](http://wiki.ros.org/ROSberryPi/Installing%20ROS%20Melodic%20on%20the%20Raspberry%20Pi) manually OR run the following install script: 
 ``` 
-./nimbus_3d_driver/scripts/install.sh
+./nimbus/scripts/install.sh
 ``` 
 * Build `nimbus_3d_driver`
 ``` 
