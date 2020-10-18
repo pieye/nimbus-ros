@@ -74,7 +74,11 @@ roscore
 rviz
 ```
 It should start if everything works as expected.
-    
+
+Otherwise try to add a rule to your firewall on your machine. (Change the IP accordingly)
+```
+sudo ufw allow from 192.168.1.23/24
+```
 
 
 ## 3. Start the Nimbus ROS Driver
