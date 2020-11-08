@@ -6,6 +6,8 @@
 ## 0. Preparation
 A raspberry Pi4 is highly recommended, because only it has a real 1GBit/s ethernet interface, which is needed for high frame rates. In addition, the Pi4 is recommended for local image processing, since only the Pi4 has sufficient CPU resources left.
 
+If you have ROS noetic and are just interested to get started as easy as possible to have the pointcloud in ROS, you can use the branch "noetic-remote". It makes use of the nimbus-server which is really easy to use but has a significant overhead in resources. 
+
 The following step (1. Installation) is only required if you want to set it up yourself.
 Otherwise use our prepared [Raspberry Pi OS (buster)](https://cloud.pieye.org/index.php/s/nimbus3D) images.
 
