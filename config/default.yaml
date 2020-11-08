@@ -1,21 +1,5 @@
-#Set ROS publishing rate - independet from the actual frame rate of the camera (it adjust dynamically)
-frame_rate: 10.0
+pointcloud: True
+intensity_image: True
 
-#Activate Downsampling and set the size of the generated voxels in meter. (0.05 = 5cm)
-#This is helpful to reduce the bandwith in the network or to limit the data comming to your algorithm afterwards
-downsampling: false
-downsampling_voxel_size: 0.05
-
-#Enable or Disable the projected range or/and intensity image
-pointcloud: true
-range_image: true
-intensity_image: true
-
-#Settings for the Auto Exposure
-amplitude: 1000.0
-max_exposure: 65535 #multiplied by 0.00001241 is time in seconds
-hdr_factor: 0.2
-exposure_mode: 1 #0: manual (set max_exposure), 1: manual_hdr (set max_exposure), 2: Auto Exposure, 3: Auto Exposure HDR
-
-#Pointcloud scaling
-XYZ_to_m: 0.00037
+exposure_mode: DEFAULT #, AUTO, AUTO_HDR, MANUAL, MANUAL_HDR
+exposure: 5000

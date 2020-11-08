@@ -1,0 +1,8 @@
+<launch>
+  <arg name="config_file" default="$(find nimbus-ros)/config/default.yaml" />
+  <param name="nimbus_ip" value="$(arg ip)"/>
+  <node name="nimbus_ros" pkg="nimbus-ros" type="nimbus_ros.py" output="screen" required="true">
+    <rosparam command="load" file="$(arg config_file)" />
+  </node>
+  <node pkg="tf" type="static_transform_publisher" name="nimbus_transform" args="0 1 0 -1.57 1.57 0 /nimbus /world 1000"/>
+</launch>
