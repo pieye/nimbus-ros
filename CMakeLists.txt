@@ -6,7 +6,7 @@ project(nimbus_3d_driver VERSION 0.10)
 add_definitions(-std=c++11)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-mfpu=neon -Ofast -march=native -ftree-parallelize-loops=4 -DNDEBUG)
+add_compile_options(-Ofast -march=native -ftree-parallelize-loops=4 -DNDEBUG)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
