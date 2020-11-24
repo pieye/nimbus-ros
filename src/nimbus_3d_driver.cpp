@@ -74,9 +74,9 @@ void imageCallback(void* unused0, void* img, void* unused1) {
                     //cast x,y,z to float and multiply by m_XYZ_to_m
                     int16x4_t xyz_vec = {x[i], y[i], z[i], z[i]};
                     float32x4_t result = vmulq_n_f32(vcvtq_f32_s32(vmovl_s16(xyz_vec)), m_XYZ_to_m);
-                    m_nimbus_cloud->points[i].x         = result[0];
-                    m_nimbus_cloud->points[i].y         = result[1];
-                    m_nimbus_cloud->points[i].z         = result[2];
+                    m_nimbus_cloud->points[i].x         = result[2];
+                    m_nimbus_cloud->points[i].y         = result[0];
+                    m_nimbus_cloud->points[i].z         = result[1];
                     m_nimbus_cloud->points[i].intensity = ampl[i];
                 }
                 else{
