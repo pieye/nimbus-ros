@@ -29,7 +29,7 @@
 #include <std_msgs/Float32.h>
 
 /**************************** defines  ******************************/
-#define CRITICAL_TEMP 70.0
+#define CRITICAL_TEMP 75.0
 
 /************************* global variables *************************/
 /**
