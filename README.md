@@ -108,16 +108,16 @@ If objects are moving fast or a minimum framerate should be achieved it can help
 Furthermore it is possible to change the following parameters during runtime:
 ```
 rosparam set 
-                /nimbus_3d_driver_node/XYZ_to_m		  [0.0 - 1.0]
+                /nimbus_3d_driver_node/XYZ_to_m		  	  [0.0 - 1.0]
                 /nimbus_3d_driver_node/amplitude		  [0 - 3000]
                 /nimbus_3d_driver_node/downsampling		  [true | false]
-                /nimbus_3d_driver_node/downsampling_voxel_size  [0.0 - 1.0]
+                /nimbus_3d_driver_node/downsampling_voxel_size    [0.0 - 1.0]
                 /nimbus_3d_driver_node/hdr_factor		  [0.0 - 1.0]
                 /nimbus_3d_driver_node/exposure_mode		  [-1 (manual), 0 (default), 1 (Auto), 2 (HDR)]
-                /nimbus_3d_driver_node/intensity_image	  [true | false]
+                /nimbus_3d_driver_node/intensity_image	  	  [true | false]
                 /nimbus_3d_driver_node/max_exposure		  [0 - 32766]
                 /nimbus_3d_driver_node/pointcloud		  [true | false]
-                /nimbus_3d_driver_node/range_image              [true | false]
+                /nimbus_3d_driver_node/range_image                [true | false]
 ```
 
 ## 5. Clock synchronization
